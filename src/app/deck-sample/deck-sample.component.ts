@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Card } from '../card/card.component';
 
 const shuffleAlgo = ([...arr]) => {
   let m = arr.length;
@@ -15,9 +16,9 @@ const shuffleAlgo = ([...arr]) => {
   styleUrls: ['./deck-sample.component.css'],
 })
 export class DeckSampleComponent implements OnInit {
-  deck: number[];
-  hand: number[] = [];
-  stash: number[] = [];
+  deck: Card[];
+  hand: Card[] = [];
+  stash: Card[] = [];
   topN = 0;
   inputTopN;
 
@@ -27,7 +28,14 @@ export class DeckSampleComponent implements OnInit {
    * 初期化処理
    */
   ngOnInit() {
-    this.deck = [...Array(60).keys()].map(i => ++i);
+    this.deck = [...Array(60).keys()].map(i => {
+      i++;
+      return {
+        Id: i,
+        frontImg:
+          'https://www.pokemon-card.com/assets/images/card_images/large/SM4p/035679_T_RIRIE.jpg',
+      } as Card;
+    });
     this.shuffle();
   }
 
@@ -83,5 +91,14 @@ export class DeckSampleComponent implements OnInit {
   stashToDeck() {
     this.deck.unshift(...this.stash);
     this.stash = [];
+  }
+
+  /**
+   * handを山札の上に
+   * @param stashIndex 山札の上に加えたいインデックス
+   */
+  handToDeck() {
+    this.deck.unshift(...this.hand);
+    this.hand = [];
   }
 }
